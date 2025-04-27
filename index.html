@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Redirection…</title>
+    <script>
+        (function () {
+            // 1) On crée un objet URLSearchParams à partir de la query string
+            const params = new URLSearchParams(window.location.search);
+
+            // 2) On récupère la cible
+            const target = params.get('code');
+            if (!target) {
+                document.onload = () => {
+                    document.body.textContent = '❌ Paramètre "code" manquant.';
+                }
+                return;
+            }
+
+            // 3) On supprime "code" et on reconstruit les autres paramètres
+            params.delete('code');
+            const rest = params.toString(); // ex: "state=192.168.0.13&foo=bar"
+
+            // 4) On choisit le séparateur correct (?) ou (&)
+            const sep = target.includes('?') ? '&' : '?';
+
+            // 5) On forme l’URL finale
+            const finalUrl = rest ? `${target}${sep}${rest}` : target;
+            console.log(finalUrl);
+
+            // 6) On remplace la page courante par la cible
+            window.location.replace(finalUrl);
+        })();
+    </script>
+</head>
+
+<body>
+    <p>🔄 Redirection en cours… Si rien ne se passe, <a id="link">cliquez ici</a>.</p>
+    <script>
+        // en cas de JS désactivé ou lenteur, on met à jour le lien
+        const fallback = document.getElementById('link');
+        const params = new URLSearchParams(window.location.search);
+        const target = params.get('code') || '#';
+        params.delete('code');
+        const rest = params.toString();
+        const sep = target.includes('?') ? '&' : '?';
+        fallback.href = rest ? `${target}${sep}${rest}` : target;
+    </script>
+</body>
+
+</html>
