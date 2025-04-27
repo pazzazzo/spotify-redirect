@@ -10,16 +10,16 @@
             const params = new URLSearchParams(window.location.search);
 
             // 2) On récupère la cible
-            const target = params.get('code');
+            const target = params.get('state');
             if (!target) {
                 document.onload = () => {
-                    document.body.textContent = '❌ Paramètre "code" manquant.';
+                    document.body.textContent = '❌ Paramètre "state" manquant.';
                 }
                 return;
             }
 
-            // 3) On supprime "code" et on reconstruit les autres paramètres
-            params.delete('code');
+            // 3) On supprime "state" et on reconstruit les autres paramètres
+            params.delete('state');
             const rest = params.toString(); // ex: "state=192.168.0.13&foo=bar"
 
             // 4) On choisit le séparateur correct (?) ou (&)
@@ -41,8 +41,8 @@
         // en cas de JS désactivé ou lenteur, on met à jour le lien
         const fallback = document.getElementById('link');
         const params = new URLSearchParams(window.location.search);
-        const target = params.get('code') || '#';
-        params.delete('code');
+        const target = params.get('state') || '#';
+        params.delete('state');
         const rest = params.toString();
         const sep = target.includes('?') ? '&' : '?';
         fallback.href = rest ? `${target}${sep}${rest}` : target;
